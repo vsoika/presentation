@@ -1,0 +1,234 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1 style="color: darkslateblue;">ASYNC JAVASCRIPT</h1>
+				</section>
+				<section>
+				<section>
+					<h2>Sync vs Async</h2>
+					<div class="introduction" style="display: flex">						
+						<img src="./assets/f5d00b699729b1dc08b3e69d3d22abf9__980x.jpg" alt="">
+						<img style="margin-left: 120px;" src="./assets/sorevn.jpg" alt="">
+					</div>
+				</section>
+				<section>
+					<img style="background: white;" src="./assets/synchronous-asynchronous-javascript.png" alt="">
+					<p style="font-size: 30px;">When you execute something <span style="color: yellow;">synchronously</span>, you wait for it to finish before moving on to another task.</p>
+					<p style="font-size: 30px;">When you execute something <span style="color: yellow;">asynchronously</span>, you can move on to another task before it finishes. </p>
+				</section>
+				<section>
+					<img style="background: white; width: 700px; height: 465px;" src="./assets/async_io.svg" alt="">
+				</section>
+				<section>
+					<h4>In a world where no one likes to wait, you just can't write code synchronously!</h4>
+					<img src="./assets/Feb19_06_78722508_938792672.jpg" alt="">
+				</section>
+			</section>
+			<section>
+				<h3 style="color: mediumpurple;">Async Examples</h3>
+				<ul style="color: mediumseagreen;">
+					<li>DOM Event</li>
+					<li>API Query</li>
+					<li>setTimeout/setInterval</li>
+				</ul>
+			</section>
+			<section>
+				<section>
+					<h1 style="color: slateblue;">CALLBACKS</h1>
+				</section>
+				<section style="width: 120%;">
+					<pre style="width: 100%;">
+						<code data-trim data-line-numbers style="max-height: 100%;">
+					const getData = callback => {
+					  setTimeout(() => {
+					    callback (null, { text: 'Complete Code Example' })
+					  }, 1000);
+					
+					  setTimeout(() => {
+					    callback (new Error ('Custom error'), { text: 'Complete Code Example' })
+					  }, 2000)
+					}
+						
+					getData((error,data) => {
+					  if(error) {
+					    console.log(error);
+					  } else {
+					    console.log(data.text);
+					  }
+					});
+					</code></pre>
+				</section>
+				<section>
+					<h4 style="color: rgb(151, 118, 47);">Common Problem: Callback Hell</h4>
+					<pre>
+						<code data-trim data-line-numbers>
+							readFile(fileName, function(text) {
+							  tokenize(text, function(tokens) {
+							     parse(tokens, function(parseTree) {
+								optimize(parseTree, function(optimizedTree) {
+								    evaluate(optimizedTree, function(output) {
+									console.log(output);
+								    });
+								});
+							     });
+							  });
+							}); 
+						</code>
+					</pre>
+				</section>
+			</section>
+			<section>
+				<section>
+					<h1 style="color: slateblue;">Promises</h1>		
+				</section>
+				<section>
+					<pre>
+						<code data-trim data-line-numbers style="max-height: 100%;">
+							const getData = () => {
+							  return new Promise((resolve, reject) => {
+							    setTimeout(() => {
+							      let error = false;
+
+							       if(!error) {
+							         resolve({ text: 'Complete Code Example' });
+							       } else {
+							         reject();
+							       }
+							     }, 2000);     
+							  })
+							}
+								
+							getData()
+							  .then(data => {
+						     console.log(data.text);
+							  })
+							  .catch(error => {
+					      console.log("Error occurred");
+							  })
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h3>Promise chain</h3>
+					<pre>
+						<code data-trim data-line-numbers>
+							getData()
+							.then(result => doSomethingElse(result))
+							.then(newResult => doThirdThing(newResult))
+							.then(finalResult => {
+							  console.log(`Final result: ${finalResult}`);
+							})
+							.catch(failureCallback);
+						</code>
+					</pre>
+				</section>
+			</section>
+				<section>
+					<section>
+					<h1 style="color: slateblue;">ASYNC / AWAIT</h1>					
+					</section>
+					<section>
+						<pre><code data-trim data-line-numbers style="max-height: 100%;">
+							const getData = () => {
+							  return new Promise((resolve, reject) => {
+							    setTimeout(() => {
+							      let error = false;
+								  
+							       if(!error) {
+							        resolve({ text: 'Complete Code Example' });
+							       } else
+							        reject();
+							    }, 2000);     
+							  })
+							}
+							
+							async function fetchData() {
+							  try { 
+							    const data = await getData();
+							    return data;
+								
+							  } catch (error) {
+							    console.log("Error occurred");
+							  }
+							}
+							
+							fetchData()
+							  .then(data => console.log(data.text))
+							  .catch(() => console.log("Error occurred")))
+						</code></pre>
+					</section>
+					<section>
+						<h3 style="color: mediumseagreen;">CONVERT PROMISE CHAIN TO ASYNC/AWAIT</h3>
+						<pre><code data-trim data-line-numbers>
+								async fetchData() {
+								  try {
+								   const data = await getData();
+								   const result = await doSomethingElse(data);
+								   const finalResult = await doThirdThing(result);
+								
+								   console.log(finalResult);
+								  } catch (error) {
+								   console.log(error);
+								}
+
+								fetchData();
+						</code></pre>
+					</section>
+					<section>
+						<h3 style="color: slateblue;">WHY ASYNC/AWAIT IS BETTER?</h3>
+						<ol style="color: mediumseagreen;">
+							<li>Concise and clean code</li>
+							<li>Errors handling</li>
+							<li>Debugging</li>
+							<li>Error stacks</li>
+						</ol>
+					</section>
+				</section>
+				<section>
+					<h3 style="color: slateblue;">THANK FOR ATTENTION</h3>
+				</section>
+			</div>
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
