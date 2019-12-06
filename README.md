@@ -13,9 +13,9 @@ In a world where no one likes to wait, you just can't write code synchronously!
 
 ### ASYNC EXAMPLES
 
-DOM Event
-API Query
-setTimeout/setInterval
+- DOM Event
+- API Query
+- setTimeout/setInterval
 
 ### Callbacks
 
@@ -55,10 +55,10 @@ When we’re outside of any async function, we can not use "await".
 In this case, we can use .then/catch to handle the final result or errors.
 
 ### WHY ASYNC/AWAIT IS BETTER?
-Concise and clean code
-Errors handling
-Debugging
-Error stacks
+- Concise and clean code
+- Errors handling
+- Debugging
+- Error stacks
 
 
 
